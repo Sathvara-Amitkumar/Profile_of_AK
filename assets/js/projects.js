@@ -46,7 +46,7 @@ const PROJECTS = [
       "88% test accuracy through optimized model parameters."
     ],
     tech: ["Python", "Pandas", "NumPy", "Scikit-learn", "Streamlit", "Data Cleanup"],
-    demo: "",   // add your live demo link
-    github: ""  // add your GitHub repo link
+    demo: "https://heart-disease-predict-404.streamlit.app/",   // add your live demo link
+    github: "https://github.com/Sathvara-Amitkumar/Heart-Disease-Prediction"  // add your GitHub repo link
   }
 ];
