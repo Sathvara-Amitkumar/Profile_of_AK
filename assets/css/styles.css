@@ -162,6 +162,7 @@ img {
 .home{position:relative;min-height:100vh;padding-top:calc(var(--header-height) + 2rem)}
 .home__container{position:relative;row-gap:2rem;text-align:center;justify-items:center}
 .home__greeting,.home__split{font-size:var(--h2-font-size);color:var(--first-color);font-weight:var(--font-medium)}
+.home__greeting span {font-size: 2.5rem;}
 .home__name{font-size:var(--biggest-font-size)}
 .home__img{position:relative;width:min(260px,70vw);order:-1}
 .home__img::before{content:"";position:absolute;inset:20% 5% 0;border-radius:50%;background:var(--first-color-alt);filter:blur(60px);opacity:.55;z-index:-1}
@@ -253,24 +254,30 @@ img {
 .contact__link{border-bottom:1px solid var(--first-color);transition:color .3s}.contact__link:hover{color:var(--first-color)}
 
 /*=============== FOOTER ===============*/
-/* .footer{margin-top:5rem;padding:2rem 1.5rem;text-align:center;font-size:var(--small-font-size);border-top:1px solid hsl(240,8%,12%);gap:.25rem}
-.footer__copy span{color:var(--first-color)} */
-
-/*=============== NEW FOOTER ===============*/
 .footer{margin-top:5rem;padding:0 1rem 1rem}
 .footer__box{position:relative;overflow:hidden;max-width:1120px;margin-inline:auto;min-height:18rem;padding:1.5rem 1.5rem 0;border-radius:1.75rem;display:flex;flex-direction:column;gap:1.25rem;
   background:radial-gradient(circle at 15% 100%,hsl(var(--hue),55%,22%),transparent 55%),linear-gradient(135deg,hsl(var(--hue),70%,52%),hsl(var(--hue),80%,68%))}
-.footer__quote{font-family:'Caveat',cursive;font-size:1.5rem;line-height:1.2;color:#fff;text-align:right;align-self:flex-end;max-width:22rem}
+.footer__quote{font-family:'Caveat',cursive;font-size:1.5rem;line-height:1.2;color:#fff;text-align:right;align-self:flex-end;}
 .footer__quote span{display:block;margin-top:.4rem;font-family:var(--body-font);font-size:var(--small-font-size);font-weight:var(--font-semi-bold)}
 .footer__social{display:flex;gap:1.25rem;font-size:1.5rem;align-self:flex-end}
 .footer__social a{color:#fff;transition:transform .3s}.footer__social a:hover{transform:translateY(-3px)}
-.footer__name{margin-top:auto;font-family:var(--second-font);font-size:clamp(4.5rem,22vw,12rem);line-height:.85;margin-bottom:-.14em;color:#fff}
+.footer__name{margin-top:auto;font-family:var(--second-font);font-size:clamp(4.5rem,22vw,9rem);line-height:.95;margin-bottom:-.14em;color:#fff}
 .footer__bottom{max-width:1120px;margin:1rem auto 0;display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem;font-size:var(--small-font-size)}
 .footer__sign{font-family:'Caveat',cursive;font-size:1.3rem;color:var(--title-color)}
 @media screen and (min-width:768px){
   .footer__box{min-height:20rem}
   .footer__social{position:absolute;right:1.5rem;bottom:1.75rem}
 }
+
+/*=============== FOOTER MOVING GLOW ===============*/
+.footer__box::before,.footer__box::after{content:"";position:absolute;border-radius:50%;pointer-events:none;filter:blur(35px)}
+.footer__box::before{width:26rem;height:26rem;background:radial-gradient(circle,hsla(0,0%,100%,.35),transparent 65%);animation:glow1 4s ease-in-out infinite alternate}
+.footer__box::after{width:18rem;height:18rem;background:radial-gradient(circle,hsla(0,0%,100%,.25),transparent 65%);animation:glow2 8s ease-in-out infinite alternate}
+@keyframes glow1{from{left:-10%;top:-40%}to{left:65%;top:30%}}
+@keyframes glow2{from{left:70%;top:45%}to{left:5%;top:-25%}}
+/* text glow ke upar rahe */
+.footer__quote,.footer__name{position:relative;z-index:1}
+@media (prefers-reduced-motion:reduce){.footer__box::before,.footer__box::after{animation:none}}
 
 /*=============== SCROLL BAR ===============*/
 ::-webkit-scrollbar{width:.6rem;background:hsl(240,8%,10%)}
@@ -304,3 +311,8 @@ img {
 }
 @media screen and (min-width:2048px){body{zoom:1.25}}
 @media screen and (max-width:1023px),(hover:none){.cursor{display:none}}
+
+
+/* social icons: har screen par neeche-right */
+.footer__social{position:absolute;right:1.5rem;bottom:1.75rem;z-index:1;gap:1rem;font-size:1.25rem}
+@media screen and (min-width:768px){.footer__social{gap:1.25rem;font-size:1.5rem}}
