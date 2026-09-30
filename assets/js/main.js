@@ -258,6 +258,8 @@ document.getElementById("contact-form").addEventListener("submit", (e) => {
 
 /*=============== FOOTER YEAR, ACTIVE LINK, CURSOR, SCROLL REVEAL ===============*/
 document.getElementById("year").textContent = new Date().getFullYear();
+document.getElementById('greeting').textContent = `Wishing you a wonderful ${new Date().toLocaleDateString('en-US', { weekday: 'long' })}!`;
+
 const secs = document.querySelectorAll("section[id]");
 addEventListener("scroll", () => {
   const y = scrollY + 120;

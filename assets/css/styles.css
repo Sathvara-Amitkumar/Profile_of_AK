@@ -253,8 +253,24 @@ img {
 .contact__link{border-bottom:1px solid var(--first-color);transition:color .3s}.contact__link:hover{color:var(--first-color)}
 
 /*=============== FOOTER ===============*/
-.footer{margin-top:5rem;padding:2rem 1.5rem;text-align:center;font-size:var(--small-font-size);border-top:1px solid hsl(240,8%,12%);gap:.25rem}
-.footer__copy span{color:var(--first-color)}
+/* .footer{margin-top:5rem;padding:2rem 1.5rem;text-align:center;font-size:var(--small-font-size);border-top:1px solid hsl(240,8%,12%);gap:.25rem}
+.footer__copy span{color:var(--first-color)} */
+
+/*=============== NEW FOOTER ===============*/
+.footer{margin-top:5rem;padding:0 1rem 1rem}
+.footer__box{position:relative;overflow:hidden;max-width:1120px;margin-inline:auto;min-height:18rem;padding:1.5rem 1.5rem 0;border-radius:1.75rem;display:flex;flex-direction:column;gap:1.25rem;
+  background:radial-gradient(circle at 15% 100%,hsl(var(--hue),55%,22%),transparent 55%),linear-gradient(135deg,hsl(var(--hue),70%,52%),hsl(var(--hue),80%,68%))}
+.footer__quote{font-family:'Caveat',cursive;font-size:1.5rem;line-height:1.2;color:#fff;text-align:right;align-self:flex-end;max-width:22rem}
+.footer__quote span{display:block;margin-top:.4rem;font-family:var(--body-font);font-size:var(--small-font-size);font-weight:var(--font-semi-bold)}
+.footer__social{display:flex;gap:1.25rem;font-size:1.5rem;align-self:flex-end}
+.footer__social a{color:#fff;transition:transform .3s}.footer__social a:hover{transform:translateY(-3px)}
+.footer__name{margin-top:auto;font-family:var(--second-font);font-size:clamp(4.5rem,22vw,12rem);line-height:.85;margin-bottom:-.14em;color:#fff}
+.footer__bottom{max-width:1120px;margin:1rem auto 0;display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem;font-size:var(--small-font-size)}
+.footer__sign{font-family:'Caveat',cursive;font-size:1.3rem;color:var(--title-color)}
+@media screen and (min-width:768px){
+  .footer__box{min-height:20rem}
+  .footer__social{position:absolute;right:1.5rem;bottom:1.75rem}
+}
 
 /*=============== SCROLL BAR ===============*/
 ::-webkit-scrollbar{width:.6rem;background:hsl(240,8%,10%)}
