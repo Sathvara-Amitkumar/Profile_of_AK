@@ -177,8 +177,8 @@ const SKILLS = [
     w: "w4",
     icons: [
       d("Scikit-learn", "scikitlearn-plain"),
-      d("Pandas", "pandas-original"),
-      d("NumPy", "numpy-original"),
+      d("Pandas", "pandas-plain"),
+      d("NumPy", "numpy-plain"),
       d("Matplotlib", "matplotlib-plain"),
     ],
     chips: [
@@ -194,7 +194,7 @@ const SKILLS = [
     w: "w4",
     icons: [
       d("TensorFlow", "tensorflow-original"),
-      d("Keras", "keras-original"),
+      d("Keras", "keras-plain"),
     ],
     chips: [
       "ANN",
