@@ -1,98 +1,300 @@
 /*=============== HOME SPLIT TEXT ===============*/
-document.querySelectorAll('.home__split, .home__profession-1, .home__profession-2').forEach((el, n) => {
-  const text = el.textContent; el.textContent = '';
-  [...text].forEach((ch, i) => {
-    const s = document.createElement('span');
-    s.className = 'split-char'; s.textContent = ch === ' ' ? '\u00A0' : ch;
-    s.style.animationDelay = `${n * 0.25 + i * 0.04}s`;
-    el.appendChild(s);
+document
+  .querySelectorAll(".home__split, .home__profession-1, .home__profession-2")
+  .forEach((el, n) => {
+    const text = el.textContent;
+    el.textContent = "";
+    [...text].forEach((ch, i) => {
+      const s = document.createElement("span");
+      s.className = "split-char";
+      s.textContent = ch === " " ? "\u00A0" : ch;
+      s.style.animationDelay = `${n * 0.25 + i * 0.04}s`;
+      el.appendChild(s);
+    });
   });
-});
 
-/*=============== PROJECT SLIDES (from projects.js) + SWIPER ===============*/
-const slides = document.getElementById('projects-slides');
-PROJECTS.forEach((p, i) => {
-  slides.insertAdjacentHTML('beforeend', `
-    <article class="swiper-slide projects__card">
-      <img src="assets/img/${p.img}" alt="${p.title.replace(/<br>/g, '')}" class="projects__img">
-      <div class="projects__data">
-        <span class="projects__number">0${i + 1}</span>
-        <h3 class="projects__type">${p.type}</h3>
-        <h2 class="projects__title">${p.title}</h2>
-        <h4 class="projects__subtitle">Technologies used</h4>
-        <p class="projects__tech">${p.tech.join(', ')}.</p>
-        <ul class="projects__points">${p.points.map(t => `<li>${t}</li>`).join('')}</ul>
-        <div class="projects__links">
-          ${p.demo ? `<a href="${p.demo}" target="_blank" rel="noopener" class="projects__link">Live Demo <i class="ri-external-link-line"></i></a>` : ''}
-          ${p.github ? `<a href="${p.github}" target="_blank" rel="noopener" class="projects__link">GitHub <i class="ri-github-line"></i></a>` : ''}
-        </div>
-      </div>
-    </article>`);
-});
-new Swiper('.projects__swiper', {
-  loop: PROJECTS.length > 2, grabCursor: true, slidesPerView: 1, spaceBetween: 24,
-  pagination: { el: '.swiper-pagination', clickable: true },
-  breakpoints: { 1150: { slidesPerView: 2, spaceBetween: 32 } }
-});
-
-/*=============== WORK TABS ===============*/
-const tabs = document.querySelectorAll('.work__button'), tabContents = document.querySelectorAll('.work__content');
-tabs.forEach(tab => tab.addEventListener('click', () => {
-  tabContents.forEach(c => c.classList.remove('work-show'));
-  tabs.forEach(t => t.classList.remove('work-active'));
-  document.querySelector(tab.dataset.target).classList.add('work-show');
-  tab.classList.add('work-active');
-}));
-
-/*=============== SERVICES ACCORDION ===============*/
-const cards = document.querySelectorAll('.services__card');
-cards.forEach(card => card.querySelector('.services__header').addEventListener('click', () => {
-  const open = card.classList.contains('services-open');
-  cards.forEach(c => c.classList.remove('services-open'));
-  if (!open) card.classList.add('services-open');
-}));
-
-/*=============== CERTIFICATIONS: DUPLICATE CARDS FOR INFINITE SCROLL ===============*/
-const certs = document.querySelector('.certs__content');
-[...certs.children].forEach(c => certs.appendChild(c.cloneNode(true)));
-
-/*=============== COPY EMAIL IN CONTACT ===============*/
-const copyBtn = document.getElementById('copy-email');
-copyBtn.addEventListener('click', () => {
-  navigator.clipboard.writeText(document.querySelector('.contact__email').textContent.trim()).then(() => {
-    copyBtn.querySelector('span').textContent = 'Email copied ✓';
-    setTimeout(() => copyBtn.querySelector('span').textContent = 'Copy email', 2000);
+/*=============== MOVING PARTICLES ===============*/
+(() => {
+  const cv = document.getElementById("particles"),
+    ctx = cv.getContext("2d");
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  let W,
+    H,
+    mouse = { x: -999, y: -999 },
+    pts = [];
+  const hue =
+    getComputedStyle(document.documentElement).getPropertyValue("--hue") || 255;
+  const size = () => {
+    W = cv.width = cv.offsetWidth;
+    H = cv.height = cv.offsetHeight;
+    pts = Array.from({ length: W < 768 ? 35 : 80 }, () => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 1.8 + 0.6,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+    }));
+  };
+  size();
+  addEventListener("resize", size);
+  cv.parentElement.addEventListener("mousemove", (e) => {
+    const b = cv.getBoundingClientRect();
+    mouse = { x: e.clientX - b.left, y: e.clientY - b.top };
   });
+  (function draw() {
+    ctx.clearRect(0, 0, W, H);
+    pts.forEach((p) => {
+      const dx = p.x - mouse.x,
+        dy = p.y - mouse.y,
+        d = Math.hypot(dx, dy);
+      if (d < 110) {
+        p.x += (dx / d) * 1.5;
+        p.y += (dy / d) * 1.5;
+      }
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0 || p.x > W) p.vx *= -1;
+      if (p.y < 0 || p.y > H) p.vy *= -1;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, 7);
+      ctx.fillStyle = `hsla(${hue},70%,75%,.6)`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  })();
+})();
+
+/*=============== PROJECT CARDS + POP-UP ===============*/
+const clean = (t) => t.replace(/<br>/g, "");
+const grid = document.getElementById("projects-grid"),
+  modal = document.getElementById("modal"),
+  body = document.getElementById("modal-body");
+PROJECTS.forEach((p, i) =>
+  grid.insertAdjacentHTML(
+    "beforeend",
+    `
+  <button class="pcard" data-i="${i}"><img src="assets/img/${p.img}" alt="${clean(p.title)}">
+    <div class="pcard__body"><span class="pcard__type">${p.type}</span><h3 class="pcard__title">${clean(p.title)}</h3>
+    <div class="tags">${p.tech
+      .slice(0, 3)
+      .map((t) => `<span>${t}</span>`)
+      .join("")}</div></div></button>`,
+  ),
+);
+const closeModal = () => {
+  modal.classList.remove("modal-open");
+  document.body.style.overflow = "";
+};
+grid.addEventListener("click", (e) => {
+  const c = e.target.closest(".pcard");
+  if (!c) return;
+  const p = PROJECTS[c.dataset.i];
+  body.innerHTML = `<img src="assets/img/${p.img}" alt=""><div class="modal__body-data"><span class="pcard__type">${p.type}</span>
+    <h2>${clean(p.title)}</h2><ul>${p.points.map((t) => `<li>${t}</li>`).join("")}</ul>
+    <h4 class="work__subtitle">Tech stack</h4><div class="tags">${p.tech.map((t) => `<span>${t}</span>`).join("")}</div>
+    <div class="projects__links">${p.demo ? `<a href="${p.demo}" target="_blank" rel="noopener" class="button">Live Demo <i class="ri-external-link-line"></i></a>` : ""}
+    ${p.github ? `<a href="${p.github}" target="_blank" rel="noopener" class="button">GitHub <i class="ri-github-line"></i></a>` : ""}</div></div>`;
+  modal.classList.add("modal-open");
+  document.body.style.overflow = "hidden";
+});
+modal.addEventListener("click", (e) => {
+  if (e.target === modal || e.target.closest(".modal__close")) closeModal();
+});
+addEventListener("keydown", (e) => e.key === "Escape" && closeModal());
+
+/*=============== WORK: EXPERIENCE + EDUCATION TOGGLE ===============*/
+const WORK = {
+  exp: [
+    {
+      t: "Python Developer Intern",
+      s: "CandidRoot Solutions Pvt. Ltd.",
+      y: "4 Months",
+      d: "Engineered and customized ERP modules with Python and the Odoo framework to streamline sales and inventory workflows. Integrated and managed PostgreSQL databases with structured business datasets, strengthening backend operations and data reliability.",
+    },
+  ],
+  edu: [
+    {
+      t: "B.Tech in Information Technology",
+      s: "Ganpat University | U. V. Patel College of Engineering",
+      y: "2026",
+      d: "Graduating in 2026 with a CGPA of 7.78.",
+    },
+    {
+      t: "Python Essentials 1",
+      s: "Cisco Networking Academy",
+      y: "2025",
+      d: "Certification covering Python fundamentals and data handling.",
+    },
+    {
+      t: "OCI AI Foundations Associate",
+      s: "Oracle Cloud Infrastructure",
+      y: "2025",
+      d: "Certification focused on AI, ML and cloud-based data processing concepts.",
+    },
+  ],
+};
+const list = document.getElementById("work-list"),
+  tabsEl = document.getElementById("work-tabs");
+const showWork = (k) => {
+  list.style.animation = "none";
+  list.offsetHeight;
+  list.style.animation = "";
+  list.innerHTML = WORK[k]
+    .map(
+      (w) =>
+        `<article class="work__item"><div class="work__left"><div><h3 class="work__title">${w.t}</h3><span class="work__subtitle">${w.s}</span></div><b class="work__year">${w.y}</b></div><p class="work__description">${w.d}</p></article>`,
+    )
+    .join("");
+};
+showWork("exp");
+tabsEl.querySelectorAll(".work__button").forEach((b) =>
+  b.addEventListener("click", () => {
+    tabsEl
+      .querySelectorAll(".work__button")
+      .forEach((x) => x.classList.remove("work-active"));
+    b.classList.add("work-active");
+    tabsEl.classList.toggle("work-edu", b.dataset.tab === "edu");
+    showWork(b.dataset.tab);
+  }),
+);
+
+/*=============== SKILLS (icons from Devicon + Remix Icon) ===============*/
+const d = (n, c) => [n, `devicon-${c}`];
+const SKILLS = [
+  {
+    t: "Programming",
+    i: "ri-code-s-slash-line",
+    w: "w2",
+    icons: [
+      d("Python", "python-plain"),
+      ["SQL", "ri-database-2-line"],
+      d("Java", "java-plain"),
+    ],
+  },
+  {
+    t: "Machine Learning",
+    i: "ri-brain-line",
+    w: "w4",
+    icons: [
+      d("Scikit-learn", "scikitlearn-plain"),
+      d("Pandas", "pandas-original"),
+      d("NumPy", "numpy-original"),
+      d("Matplotlib", "matplotlib-plain"),
+    ],
+    chips: [
+      "Data Preprocessing",
+      "Feature Engineering",
+      "EDA",
+      "Model Evaluation",
+    ],
+  },
+  {
+    t: "Deep Learning",
+    i: "ri-node-tree",
+    w: "w4",
+    icons: [
+      d("TensorFlow", "tensorflow-original"),
+      d("Keras", "keras-original"),
+    ],
+    chips: [
+      "ANN",
+      "Perceptron",
+      "Forward Propagation",
+      "Backpropagation",
+      "ReLU",
+      "Sigmoid",
+      "Softmax",
+      "Categorical Crossentropy",
+      "Gradient Descent",
+      "Adam",
+    ],
+  },
+  {
+    t: "Backend & APIs",
+    i: "ri-server-line",
+    w: "w2",
+    icons: [d("FastAPI", "fastapi-plain"), d("Flask", "flask-original")],
+    chips: ["Pydantic", "REST APIs"],
+  },
+  {
+    t: "Databases",
+    i: "ri-database-line",
+    w: "w2",
+    icons: [d("MySQL", "mysql-original"), d("PostgreSQL", "postgresql-plain")],
+  },
+  {
+    t: "Tools",
+    i: "ri-tools-line",
+    w: "w4",
+    icons: [
+      d("Git", "git-plain"),
+      d("GitHub", "github-original"),
+      d("Jupyter Notebook", "jupyter-plain"),
+      d("VS Code", "vscode-plain"),
+      ["Streamlit", "ri-bar-chart-box-line"],
+    ],
+  },
+];
+document.getElementById("skills-grid").innerHTML = SKILLS.map(
+  (s) => `<article class="skills__card ${s.w}">
+  <div class="skills__head"><i class="${s.i}"></i><h3>${s.t}</h3></div>
+  <div class="skills__items">${s.icons.map(([n, c]) => `<span class="skills__icon" title="${n}" aria-label="${n}"><i class="${c}"></i></span>`).join("")}${(s.chips || []).map((c) => `<span class="skills__chip">${c}</span>`).join("")}</div></article>`,
+).join("");
+
+/*=============== CONTACT FORM -> GMAIL (auto-filled) ===============*/
+document.getElementById("contact-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const f = new FormData(e.target);
+  const body = `${f.get("message")}\n\n--\n${f.get("name")}\n${f.get("email")}`;
+  const q = new URLSearchParams({
+    view: "cm",
+    fs: "1",
+    to: "sathvaraamit2005@gmail.com",
+    su: f.get("subject"),
+    body,
+  });
+  window.open(`https://mail.google.com/mail/?${q}`, "_blank", "noopener");
 });
 
-/*=============== CURRENT YEAR OF THE FOOTER ===============*/
-document.getElementById('year').textContent = new Date().getFullYear();
-
-/*=============== SCROLL SECTIONS ACTIVE LINK ===============*/
-const secs = document.querySelectorAll('section[id]');
-addEventListener('scroll', () => {
+/*=============== FOOTER YEAR, ACTIVE LINK, CURSOR, SCROLL REVEAL ===============*/
+document.getElementById("year").textContent = new Date().getFullYear();
+const secs = document.querySelectorAll("section[id]");
+addEventListener("scroll", () => {
   const y = scrollY + 120;
-  secs.forEach(s => {
-    const link = document.querySelector(`.nav__link[href="#${s.id}"]`);
-    if (link) link.classList.toggle('active-link', y >= s.offsetTop && y < s.offsetTop + s.offsetHeight);
+  secs.forEach((s) => {
+    const l = document.querySelector(`.nav__link[href="#${s.id}"]`);
+    if (l)
+      l.classList.toggle(
+        "active-link",
+        y >= s.offsetTop && y < s.offsetTop + s.offsetHeight,
+      );
   });
-  document.getElementById('header').classList.toggle('header-blur', scrollY > 20);
+  document
+    .getElementById("header")
+    .classList.toggle("header-blur", scrollY > 20);
 });
-
-/*=============== CUSTOM CURSOR ===============*/
-const cursor = document.querySelector('.cursor');
-addEventListener('mousemove', e => { cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`; cursor.style.opacity = 1; });
-/* Hide custom cursor on links */
-document.querySelectorAll('a, button, .services__header').forEach(el => {
-  el.addEventListener('mouseenter', () => cursor.classList.add('cursor-hide'));
-  el.addEventListener('mouseleave', () => cursor.classList.remove('cursor-hide'));
+const cursor = document.querySelector(".cursor");
+addEventListener("mousemove", (e) => {
+  cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+  cursor.style.opacity = 1;
 });
-
-/*=============== SCROLL REVEAL ANIMATION ===============*/
-if (typeof ScrollReveal !== 'undefined') {
-  const sr = ScrollReveal({ origin: 'top', distance: '60px', duration: 2000, delay: 200 });
-  sr.reveal('.home__img, .about__img, .section__title, .contact__data');
-  sr.reveal('.home__data, .about__data', { origin: 'left' });
-  sr.reveal('.home__info, .contact__info', { origin: 'right' });
-  sr.reveal('.projects__swiper, .work__container, .services__card, .certs__container', { interval: 100 });
+document.addEventListener("mouseover", (e) =>
+  cursor.classList.toggle(
+    "cursor-hide",
+    !!e.target.closest("a, button, input, textarea"),
+  ),
+);
+if (typeof ScrollReveal !== "undefined") {
+  const sr = ScrollReveal({
+    origin: "top",
+    distance: "60px",
+    duration: 1800,
+    delay: 150,
+  });
+  sr.reveal(".home__img, .about__img, .section__title");
+  sr.reveal(".home__data, .about__data", { origin: "left" });
+  sr.reveal(".home__info, .contact__info", { origin: "right" });
+  sr.reveal(".pcard, .skills__card, .work__tabs, .contact__form", {
+    interval: 100,
+  });
 }
