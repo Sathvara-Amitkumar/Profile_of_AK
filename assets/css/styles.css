@@ -316,3 +316,18 @@ img {
 /* social icons: har screen par neeche-right */
 .footer__social{position:absolute;right:1.5rem;bottom:1.75rem;z-index:1;gap:1rem;font-size:1.25rem}
 @media screen and (min-width:768px){.footer__social{gap:1.25rem;font-size:1.5rem}}
+
+
+
+
+/* Projects: desktop par 3 cards ek row me, cards lambe */
+.projects__grid{grid-template-columns:1fr;gap:1.25rem}
+.pcard{display:flex;flex-direction:column}
+.pcard img{height:11rem}
+.pcard__body{flex:1;padding:1.1rem;gap:.6rem}
+.pcard__title{font-size:var(--h3-font-size)}
+@media screen and (min-width:768px){.projects__grid{grid-template-columns:repeat(2,1fr)}}
+@media screen and (min-width:1150px){
+  .projects__grid{grid-template-columns:repeat(3,1fr)}
+  .pcard img{height:14rem}
+} 
