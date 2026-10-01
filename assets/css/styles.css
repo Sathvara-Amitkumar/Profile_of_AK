@@ -331,3 +331,21 @@ img {
   .projects__grid{grid-template-columns:repeat(3,1fr)}
   .pcard img{height:14rem}
 } 
+
+
+/* About stats */
+.about__stats{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;width:100%}
+.stat{display:grid;gap:.3rem;padding:1.5rem 1rem;text-align:center;background:var(--container-color);border:1px solid hsl(240,8%,12%);border-radius:1rem;transition:.3s}
+.stat:hover{border-color:var(--first-color);transform:translateY(-4px)}
+.stat b{font-family:var(--second-font);font-size:var(--h1-font-size);color:var(--first-color)}
+.stat span{font-size:var(--small-font-size)}
+@media screen and (min-width:768px){.about__container{grid-template-columns:1fr 1fr}.about__stats{order:2}}
+
+/* Contact cards + globe */
+.contact__cards{display:grid;gap:1rem;align-content:start}
+.ccard{position:relative;overflow:hidden;padding:1.25rem;background:var(--container-color);border:1px solid hsl(240,8%,12%);border-radius:1rem}
+.ccard--row{display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.ccard__copy{width:2.4rem;height:2.4rem;flex-shrink:0;border-radius:.6rem;background:var(--first-color-alt);color:#fff;font-size:.8rem;cursor:pointer;transition:background .3s}
+.ccard__copy:hover{background:var(--first-color-alt-2)}
+.ccard--loc{min-height:12rem}
+#globe{position:absolute;right:-3.5rem;bottom:-6rem;width:17rem;height:17rem;max-width:none}

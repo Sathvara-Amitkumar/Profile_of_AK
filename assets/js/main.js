@@ -300,3 +300,9 @@ if (typeof ScrollReveal !== "undefined") {
     interval: 100,
   });
 }
+
+// Copy Email
+const cb = document.getElementById('copy-email');
+cb.addEventListener('click', () => navigator.clipboard.writeText('sathvaraamit2005@gmail.com').then(() => {
+  cb.innerHTML = 'Copied ✓'; setTimeout(() => cb.innerHTML = '<i class="ri-file-copy-line"></i>', 2000);
+}));

@@ -62,9 +62,9 @@
             <!-- Stat card -->
             <div class="about__stats">
                <div class="stat"><b>4</b><span>Projects</span></div>
-               <div class="stat"><b>96.67%</b><span>Best ANN accuracy</span></div>
+               <div class="stat git"><b id="github-stars">—</b><span>GitHub Stars</span></div>
                <div class="stat"><b>7.78</b><span>CGPA</span></div>
-               <div class="stat"><b>4 Mo</b><span>Internship</span></div>
+               <div class="stat"><b>60 +</b><span>Leetcode Problem Solved</span></div>
             </div>
 
             <div class="about__data">
@@ -118,10 +118,27 @@
                <textarea name="message" rows="4" placeholder="Message" required></textarea>
                <button class="contact__button" type="submit">Send via Gmail <i class="ri-mail-send-line"></i></button>
             </form>
-            <div class="contact__info grid">
-               <div><h3 class="contact__title">Email</h3><a href="mailto:sathvaraamit2005@gmail.com" class="contact__address">sathvaraamit2005@gmail.com</a></div>
-               <div><h3 class="contact__title">Location</h3><p class="contact__address">Ahmedabad, Gujarat, India</p></div>
+
+            <!-- Globe card -->
+            <div class="contact__cards">
+               <div class="ccard ccard--row">
+                  <div><h3 class="contact__title">Email</h3><a href="mailto:sathvaraamit2005@gmail.com" class="contact__address">sathvaraamit2005@gmail.com</a></div>
+                  <button class="ccard__copy" id="copy-email" aria-label="Copy email"><i class="ri-file-copy-line"></i></button>
+               </div>
+               <div class="ccard ccard--loc">
+                  <div><h3 class="contact__title">Location</h3><p class="contact__address">Ahmedabad <br> Gujarat, India</p></div>
+                  <canvas id="globe" width="800" height="800"></canvas>
+               </div>
+               <div class="ccard">
+                  <h3 class="contact__title">Social Media</h3>
+                  <div class="contact__links">
+                     <a href="https://www.linkedin.com/in/sathvara-amitkumar-015783285" target="_blank" rel="noopener" class="contact__link">LinkedIn</a>
+                     <a href="https://github.com/Sathvara-Amitkumar" target="_blank" rel="noopener" class="contact__link">GitHub</a>
+                     <a href="https://leetcode.com/u/ERROR_INFINITY/" target="_blank" rel="noopener" class="contact__link">LeetCode</a>
+                  </div>
+               </div>
             </div>
+
          </div>
       </section>
    </main>
@@ -147,6 +164,38 @@
    <script src="assets/js/scrollreveal.min.js"></script>
    <script src="assets/js/projects.js"></script>
    <script src="assets/js/main.js"></script>
+
+
+   <script type="module">
+      import createGlobe from "https://cdn.jsdelivr.net/npm/cobe@0.6.3/+esm";
+      let phi = 0;
+      createGlobe(document.getElementById('globe'), {
+         devicePixelRatio: 3, width: 900, height: 900, phi: 0, theta: 0.25, dark: 1, diffuse: 1.2,
+         mapSamples: 18000, mapBrightness: 10,
+         baseColor: [0.25, 0.2, 0.5], glowColor: [0.35, 0.25, 0.8], markerColor: [1, 0.25, 0.25],
+         markers: [{ location: [23.0225, 72.5714], size: 0.1 }],   // Ahmedabad
+         onRender: s => { s.phi = phi; phi += 0.005; }
+         
+      });
+
+      // Fetch the total stars across the account's public repositories.
+      const starsElement = document.getElementById("github-stars");
+      fetch("https://api.github.com/users/Sathvara-Amitkumar/repos?per_page=100")
+         .then(response => {
+            if (!response.ok) throw new Error("GitHub API request failed");
+            return response.json();
+         })
+         .then(repositories => {
+            const totalStars = repositories.reduce((total, repository) => total + repository.stargazers_count, 0);
+            starsElement.textContent = totalStars;
+         })
+         .catch(error => {
+            console.error("Unable to fetch GitHub stars:", error);
+            starsElement.textContent = "—";
+         });
+      
+      
+   </script>
 </body>
 </html>
 
