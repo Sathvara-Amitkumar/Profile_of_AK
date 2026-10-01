@@ -191,9 +191,9 @@
       });
 
       /* Drag to rotate (mouse + touch) */
-      // cv.addEventListener('pointerdown', e => { dragging = true; lastX = e.clientX; cv.setPointerCapture(e.pointerId); });
-      // cv.addEventListener('pointermove', e => { if (!dragging) return; phi += (e.clientX - lastX) / 120; lastX = e.clientX; });
-      // ['pointerup', 'pointercancel'].forEach(ev => cv.addEventListener(ev, () => dragging = false));
+      cv.addEventListener('pointerdown', e => { dragging = true; lastX = e.clientX; cv.setPointerCapture(e.pointerId); });
+      cv.addEventListener('pointermove', e => { if (!dragging) return; phi += (e.clientX - lastX) / 120; lastX = e.clientX; });
+      ['pointerup', 'pointercancel'].forEach(ev => cv.addEventListener(ev, () => dragging = false));
 
 
 
