@@ -1,0 +1,100 @@
+Index.html
+
+
+<section class="music section" id="music">
+  <div class="music__card container">
+    <div class="music__text">
+      <h2 class="music__title">Amit's Music Pick</h2>
+      <p>Coding ke time jo gaane repeat par chalte hain, unki ek jhalak. Phone ke upar wali <b>black pill</b> par click karo.</p>
+      <small>Music apne aap nahi bajega, sirf click par chalega.</small>
+    </div>
+    <div class="phonewrap"><div class="phone">
+      <img src="assets/img/phone.jpg" alt="Phone mockup">
+      <div class="island" id="island">
+        <div class="island__top">
+          <img class="island__cover" id="p-cover" src="assets/img/cover-bairan.jpg" alt="">
+          <div class="island__meta"><b id="p-title">Bairan</b><span id="p-artist">Banjaare</span></div>
+          <div class="bars"><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+        <div class="island__ctrl">
+          <div class="prog"><span id="p-cur">0:00</span><input type="range" id="p-seek" min="0" max="100" value="0"><span id="p-dur">0:00</span></div>
+          <div class="btns">
+            <button id="p-prev" aria-label="Previous"><i class="ri-skip-back-fill"></i></button>
+            <button id="p-play" class="btns__main" aria-label="Play"><i class="ri-play-fill"></i></button>
+            <button id="p-next" aria-label="Next"><i class="ri-skip-forward-fill"></i></button>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+
+
+styles.css
+
+
+/*=============== MUSIC (dynamic island) ===============*/
+.music__card{display:grid;align-items:center;background:#efeeec;color:#1c1c1c;border-radius:1.5rem;overflow:hidden}
+.music__text{padding:2rem 1.5rem 0;display:grid;gap:.9rem}
+.music__title{font-size:var(--h2-font-size);color:#111}
+.music__text p{line-height:1.7;color:#333}.music__text small{color:#777}
+.phonewrap{overflow:hidden;align-self:end;margin-top:1rem}
+.phone{position:relative;container-type:inline-size;width:max(100%,560px);margin-left:50%;transform:translateX(-50%)}
+.phone>img{display:block;width:100%}
+.island{position:absolute;left:41.9%;top:25.5%;width:16.4%;height:6.9%;overflow:hidden;background:#000;color:#fff;border-radius:999px;cursor:pointer;transition:all .55s cubic-bezier(.5,0,.2,1)}
+.island.open{left:21%;width:58%;height:36%;border-radius:3.2cqw;cursor:default}
+.island__top{display:flex;align-items:center;gap:1.2cqw;padding:.7cqw 1.4cqw;height:4.8cqw}
+.island.open .island__top{height:auto;padding:2cqw 2.4cqw 1cqw}
+.island__cover{width:3.4cqw;height:3.4cqw;border-radius:.7cqw;object-fit:cover;flex-shrink:0;transition:all .55s}
+.island.open .island__cover{width:7cqw;height:7cqw;border-radius:1.2cqw}
+.island__meta{flex:1;min-width:0;display:grid;opacity:0;white-space:nowrap;overflow:hidden;transition:opacity .3s}
+.island.open .island__meta{opacity:1;transition-delay:.25s}
+.island__meta b{font-size:2.3cqw}.island__meta span{font-size:1.8cqw;color:#9a9a9a}
+.bars{display:flex;align-items:center;gap:.35cqw;height:2.4cqw;margin-left:auto}
+.bars i{width:.45cqw;height:30%;border-radius:1cqw;background:#fff}
+.island.playing .bars i{animation:eq 1s ease-in-out infinite alternate}
+.bars i:nth-child(2){animation-delay:.2s}.bars i:nth-child(3){animation-delay:.4s}.bars i:nth-child(4){animation-delay:.1s}.bars i:nth-child(5){animation-delay:.3s}
+@keyframes eq{to{height:100%}}
+.island__ctrl{padding:0 2.4cqw;opacity:0;transition:opacity .3s}
+.island.open .island__ctrl{opacity:1;transition-delay:.3s}
+.prog{display:flex;align-items:center;gap:1.4cqw;font-size:1.6cqw;color:#9a9a9a}
+.prog input{flex:1;accent-color:#fff}
+.btns{display:flex;justify-content:space-between;align-items:center;padding:1cqw 6cqw 0}
+.btns button{background:none;color:#fff;font-size:3.2cqw;cursor:pointer}
+.btns__main{font-size:4.4cqw!important}
+@media screen and (min-width:768px){.music__card{grid-template-columns:1fr 1fr}.music__text{padding:2.5rem}}
+
+
+
+main.js
+
+
+/*=============== MUSIC PLAYER (dynamic island) ===============*/
+const TRACKS = [   // naye gaane yaha add karo
+  { src: 'assets/audio/bairan.mp3', title: 'Bairan', artist: 'Banjaare', cover: 'assets/img/cover-bairan.jpg' },
+  { src: 'assets/audio/tere-bina.mp3', title: 'Tere Bina', artist: 'A R Rahman', cover: 'assets/img/cover-tere-bina.jpg' }
+];
+(() => {
+  const $ = id => document.getElementById(id), island = $('island'), audio = new Audio();
+  audio.preload = 'none'; let n = 0;
+  const fmt = s => isFinite(s) ? `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}` : '0:00';
+  const load = (i, play) => { n = (i + TRACKS.length) % TRACKS.length; const t = TRACKS[n];
+    audio.src = t.src; $('p-title').textContent = t.title; $('p-artist').textContent = t.artist; $('p-cover').src = t.cover;
+    $('p-seek').value = 0; $('p-cur').textContent = '0:00'; $('p-dur').textContent = '0:00'; if (play) audio.play(); };
+  const setIcon = () => { const p = !audio.paused; island.classList.toggle('playing', p); $('p-play').innerHTML = `<i class="ri-${p ? 'pause' : 'play'}-fill"></i>`; };
+  load(0, false);
+  island.addEventListener('click', e => {
+    if (!island.classList.contains('open')) island.classList.add('open');
+    else if (e.target.closest('.island__top')) island.classList.remove('open');
+  });
+  document.addEventListener('click', e => { if (!e.target.closest('#island')) island.classList.remove('open'); });
+  $('p-play').onclick = () => audio.paused ? audio.play() : audio.pause();
+  $('p-next').onclick = () => load(n + 1, true);
+  $('p-prev').onclick = () => load(n - 1, true);
+  $('p-seek').oninput = e => audio.currentTime = (audio.duration * e.target.value / 100) || 0;
+  audio.onplay = audio.onpause = setIcon;
+  audio.onloadedmetadata = () => $('p-dur').textContent = fmt(audio.duration);
+  audio.ontimeupdate = () => { $('p-cur').textContent = fmt(audio.currentTime); $('p-seek').value = audio.duration ? audio.currentTime / audio.duration * 100 : 0; };
+  audio.onended = () => load(n + 1, true);
+})();

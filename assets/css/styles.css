@@ -266,7 +266,7 @@ img {
 .footer__sign{font-family:'Caveat',cursive;font-size:1.3rem;color:var(--title-color)}
 @media screen and (min-width:768px){
   .footer__box{min-height:20rem}
-  .footer__social{position:absolute;right:1.5rem;bottom:1.75rem}
+  /* .footer__social{position:absolute;right:1.5rem;bottom:1.75rem} */
 }
 
 /*=============== FOOTER MOVING GLOW ===============*/
@@ -313,12 +313,6 @@ img {
 @media screen and (max-width:1023px),(hover:none){.cursor{display:none}}
 
 
-/* social icons: har screen par neeche-right */
-.footer__social{position:absolute;right:1.5rem;bottom:1.75rem;z-index:1;gap:1rem;font-size:1.25rem}
-@media screen and (min-width:768px){.footer__social{gap:1.25rem;font-size:1.5rem}}
-
-
-
 
 /* Projects: desktop par 3 cards ek row me, cards lambe */
 .projects__grid{grid-template-columns:1fr;gap:1.25rem}
@@ -349,3 +343,31 @@ img {
 .ccard__copy:hover{background:var(--first-color-alt-2)}
 .ccard--loc{min-height:12rem}
 #globe{position:absolute;right:-3.5rem;bottom:-6rem;width:17rem;height:17rem;max-width:none}
+
+
+
+.about__description{font-size:1.05rem;line-height:1.9;text-align:justify;hyphens:auto}
+@media screen and (min-width:1150px){.about__description{font-size:1.15rem}}
+
+
+.nav__toggle{display:none;background:none;color:var(--title-color);font-size:1.7rem;cursor:pointer}
+.nav__overlay{display:none}
+@media screen and (max-width:767px){
+  .nav__toggle{display:block}
+  .nav__list{position:fixed;top:0;right:-100%;width:70%;max-width:18rem;height:100vh;flex-direction:column;justify-content:center;align-items:center;gap:2.2rem;background:hsl(240,30%,6%);border-left:1px solid hsl(240,8%,14%);transition:right .4s;z-index:101}
+  .nav__list.show{right:0}
+  .nav__link{font-size:1.1rem}
+  .nav__overlay{display:block;position:fixed;inset:0;z-index:99;background:hsla(240,100%,2%,.5);backdrop-filter:blur(8px);opacity:0;visibility:hidden;transition:.3s}
+  .nav__overlay.show{opacity:1;visibility:visible}
+  .header-blur{backdrop-filter:none;background:hsla(240,100%,2%,.9)}
+}
+
+
+/* Footer responsive */
+/* Footer social: mobile = beech me (AMIT. ke upar), desktop = neeche-right */
+.footer__social{position:relative;z-index:1;align-self:center;justify-content:center;margin-top:auto;gap:1.25rem;font-size:1.4rem}
+.footer__name{margin-top:0}
+@media screen and (min-width:768px){
+  .footer__social{position:absolute;right:1.75rem;bottom:1.75rem;align-self:auto;margin-top:0;gap:1.25rem;font-size:1.5rem}
+  .footer__name{margin-top:auto}
+}

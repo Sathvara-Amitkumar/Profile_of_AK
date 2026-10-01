@@ -306,3 +306,12 @@ const cb = document.getElementById('copy-email');
 cb.addEventListener('click', () => navigator.clipboard.writeText('sathvaraamit2005@gmail.com').then(() => {
   cb.innerHTML = 'Copied ✓'; setTimeout(() => cb.innerHTML = '<i class="ri-file-copy-line"></i>', 2000);
 }));
+
+
+/*=============== MOBILE MENU ===============*/
+const navList = document.querySelector('.nav__list'), navTog = document.getElementById('nav-toggle'), navOv = document.getElementById('nav-overlay');
+const navToggle = s => { navList.classList.toggle('show', s); navOv.classList.toggle('show', s);
+  navTog.innerHTML = `<i class="ri-${s ? 'close' : 'menu'}-line"></i>`; document.body.style.overflow = s ? 'hidden' : ''; };
+navTog.onclick = () => navToggle(!navList.classList.contains('show'));
+navOv.onclick = () => navToggle(false);
+navList.querySelectorAll('a').forEach(a => a.onclick = () => navToggle(false));
