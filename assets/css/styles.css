@@ -342,8 +342,8 @@ img {
 .ccard__copy{width:2.4rem;height:2.4rem;flex-shrink:0;border-radius:.6rem;background:var(--first-color-alt);color:#fff;font-size:.8rem;cursor:pointer;transition:background .3s}
 .ccard__copy:hover{background:var(--first-color-alt-2)}
 .ccard--loc{min-height:12rem}
-#globe{position:absolute;right:-3.5rem;bottom:-6rem;width:17rem;height:17rem;max-width:none}
-
+#globe{position:absolute;right:-3.5rem;bottom:-6rem;width:17rem;height:17rem;max-width:none; cursor: grab; touch-action:pan-y}
+#globe:active{cursor:grabbing}
 
 
 .about__description{font-size:1.05rem;line-height:1.9;text-align:justify;hyphens:auto}
@@ -371,3 +371,11 @@ img {
   .footer__social{position:absolute;right:1.75rem;bottom:1.75rem;align-self:auto;margin-top:0;gap:1.25rem;font-size:1.5rem}
   .footer__name{margin-top:auto}
 }
+
+
+/* Contact messages into google sheets */
+.hp{position:absolute;left:-9999px;height:0;opacity:0}
+.contact__status{font-size:var(--small-font-size);min-height:1.2em}
+.contact__status.ok{color:#5ee08a}.contact__status.err{color:#ff7b7b}
+.contact__button:disabled{opacity:.6;cursor:wait}
+.contact__note{font-size:var(--smaller-font-size);color:var(--text-color-light)}

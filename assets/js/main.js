@@ -241,20 +241,24 @@ document.getElementById("skills-grid").innerHTML = SKILLS.map(
   <div class="skills__items">${s.icons.map(([n, c]) => `<span class="skills__icon" title="${n}" aria-label="${n}"><i class="${c}"></i></span>`).join("")}${(s.chips || []).map((c) => `<span class="skills__chip">${c}</span>`).join("")}</div></article>`,
 ).join("");
 
-/*=============== CONTACT FORM -> GMAIL (auto-filled) ===============*/
-document.getElementById("contact-form").addEventListener("submit", (e) => {
+
+/*=============== CONTACT FORM -> GOOGLE SHEET ===============*/
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyhkT1JpDLb2HfedHBNxdx12mQd03saMVB0nkEmje7bK7vW1CKXFO8KIWndtuLlKecQ7g/exec';
+const form = document.getElementById('contact-form'), statusEl = document.getElementById('form-status');
+form.addEventListener('submit', async e => {
   e.preventDefault();
-  const f = new FormData(e.target);
-  const body = `${f.get("message")}\n\n--\n${f.get("name")}\n${f.get("email")}`;
-  const q = new URLSearchParams({
-    view: "cm",
-    fs: "1",
-    to: "sathvaraamit2005@gmail.com",
-    su: f.get("subject"),
-    body,
-  });
-  window.open(`https://mail.google.com/mail/?${q}`, "_blank", "noopener");
+  const btn = form.querySelector('button[type=submit]'), label = btn.innerHTML;
+  btn.disabled = true; btn.innerHTML = 'Sending...'; statusEl.className = 'contact__status'; statusEl.textContent = '';
+  try {
+    const res = await fetch(SHEET_URL, { method: 'POST', body: new URLSearchParams(new FormData(form)) });
+    if ((await res.text()).trim() !== 'ok') throw new Error('server');
+    form.reset(); statusEl.textContent = 'Thanks! Your message has been sent ✓'; statusEl.classList.add('ok');
+  } catch {
+    statusEl.textContent = 'Something went wrong. Please email me at sathvaraamit2005@gmail.com'; statusEl.classList.add('err');
+  }
+  btn.disabled = false; btn.innerHTML = label;
 });
+
 
 /*=============== FOOTER YEAR, ACTIVE LINK, CURSOR, SCROLL REVEAL ===============*/
 document.getElementById("year").textContent = new Date().getFullYear();
