@@ -148,7 +148,6 @@ const WORK = {
   ],
 };
 
-
 const list = document.getElementById("work-list"),
   tabsEl = document.getElementById("work-tabs");
 const showWork = (k) => {
@@ -267,12 +266,17 @@ form.addEventListener("submit", async (e) => {
   btn.innerHTML = "Sending...";
   statusEl.className = "contact__status";
   statusEl.textContent = "";
+
   try {
-    const res = await fetch(SHEET_URL, {
-      method: "POST",
-      body: new URLSearchParams(new FormData(form)),
-    });
-    if ((await res.text()).trim() !== "ok") throw new Error("server");
+    // const res = await fetch(SHEET_URL, {
+    //   method: "POST",
+    //   body: new URLSearchParams(new FormData(form)),
+    // });
+
+    // if ((await res.text()).trim() !== "ok") throw new Error("server");
+
+    await fetch(SHEET_URL, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(new FormData(form)) });
+
     form.reset();
     statusEl.textContent = "Thanks! Your message has been sent ✓";
     statusEl.classList.add("ok");
