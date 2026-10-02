@@ -379,3 +379,13 @@ img {
 .contact__status.ok{color:#5ee08a}.contact__status.err{color:#ff7b7b}
 .contact__button:disabled{opacity:.6;cursor:wait}
 .contact__note{font-size:var(--smaller-font-size);color:var(--text-color-light)}
+
+
+
+/* 3-tab toggle */
+.work__tabs{grid-template-columns:repeat(3,minmax(0,1fr));width:min(100%,34rem)}
+.work__slider{width:calc((100% - .5rem) / 3)}
+.work__tabs[data-tab="edu"] .work__slider{transform:translateX(100%)}
+.work__tabs[data-tab="cert"] .work__slider{transform:translateX(200%)}
+.work__button{white-space:nowrap;padding:.7rem .5rem}
+@media screen and (max-width:480px){.work__button{font-size:.8rem}.work__button i{display:none}}

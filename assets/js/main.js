@@ -120,6 +120,20 @@ const WORK = {
       d: "Graduating in 2026 with a CGPA of 7.78.",
     },
     {
+      t: "HSC",
+      s: "K. N. Patel Sarvoday High School, Kahoda",
+      y: "2022",
+      d: "Higher Secondary Certificate with 55.23%.",
+    },
+    {
+      t: "SSC",
+      s: "K. N. Patel Sarvoday High School, Kahoda",
+      y: "2020",
+      d: "Secondary School Certificate with 65.66%.",
+    },
+  ],
+  cert: [
+    {
       t: "Python Essentials 1",
       s: "Cisco Networking Academy",
       y: "2025",
@@ -133,6 +147,8 @@ const WORK = {
     },
   ],
 };
+
+
 const list = document.getElementById("work-list"),
   tabsEl = document.getElementById("work-tabs");
 const showWork = (k) => {
@@ -153,7 +169,7 @@ tabsEl.querySelectorAll(".work__button").forEach((b) =>
       .querySelectorAll(".work__button")
       .forEach((x) => x.classList.remove("work-active"));
     b.classList.add("work-active");
-    tabsEl.classList.toggle("work-edu", b.dataset.tab === "edu");
+    tabsEl.dataset.tab = b.dataset.tab;
     showWork(b.dataset.tab);
   }),
 );
@@ -192,10 +208,7 @@ const SKILLS = [
     t: "Deep Learning",
     i: "ri-node-tree",
     w: "w4",
-    icons: [
-      d("TensorFlow", "tensorflow-original"),
-      d("Keras", "keras-plain"),
-    ],
+    icons: [d("TensorFlow", "tensorflow-original"), d("Keras", "keras-plain")],
     chips: [
       "ANN",
       "Perceptron",
@@ -241,28 +254,41 @@ document.getElementById("skills-grid").innerHTML = SKILLS.map(
   <div class="skills__items">${s.icons.map(([n, c]) => `<span class="skills__icon" title="${n}" aria-label="${n}"><i class="${c}"></i></span>`).join("")}${(s.chips || []).map((c) => `<span class="skills__chip">${c}</span>`).join("")}</div></article>`,
 ).join("");
 
-
 /*=============== CONTACT FORM -> GOOGLE SHEET ===============*/
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyhkT1JpDLb2HfedHBNxdx12mQd03saMVB0nkEmje7bK7vW1CKXFO8KIWndtuLlKecQ7g/exec';
-const form = document.getElementById('contact-form'), statusEl = document.getElementById('form-status');
-form.addEventListener('submit', async e => {
+const SHEET_URL =
+  "https://script.google.com/macros/s/AKfycbyhkT1JpDLb2HfedHBNxdx12mQd03saMVB0nkEmje7bK7vW1CKXFO8KIWndtuLlKecQ7g/exec";
+const form = document.getElementById("contact-form"),
+  statusEl = document.getElementById("form-status");
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
-  const btn = form.querySelector('button[type=submit]'), label = btn.innerHTML;
-  btn.disabled = true; btn.innerHTML = 'Sending...'; statusEl.className = 'contact__status'; statusEl.textContent = '';
+  const btn = form.querySelector("button[type=submit]"),
+    label = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = "Sending...";
+  statusEl.className = "contact__status";
+  statusEl.textContent = "";
   try {
-    const res = await fetch(SHEET_URL, { method: 'POST', body: new URLSearchParams(new FormData(form)) });
-    if ((await res.text()).trim() !== 'ok') throw new Error('server');
-    form.reset(); statusEl.textContent = 'Thanks! Your message has been sent ✓'; statusEl.classList.add('ok');
+    const res = await fetch(SHEET_URL, {
+      method: "POST",
+      body: new URLSearchParams(new FormData(form)),
+    });
+    if ((await res.text()).trim() !== "ok") throw new Error("server");
+    form.reset();
+    statusEl.textContent = "Thanks! Your message has been sent ✓";
+    statusEl.classList.add("ok");
   } catch {
-    statusEl.textContent = 'Something went wrong. Please email me at sathvaraamit2005@gmail.com'; statusEl.classList.add('err');
+    statusEl.textContent =
+      "Something went wrong. Please email me at sathvaraamit2005@gmail.com";
+    statusEl.classList.add("err");
   }
-  btn.disabled = false; btn.innerHTML = label;
+  btn.disabled = false;
+  btn.innerHTML = label;
 });
-
 
 /*=============== FOOTER YEAR, ACTIVE LINK, CURSOR, SCROLL REVEAL ===============*/
 document.getElementById("year").textContent = new Date().getFullYear();
-document.getElementById('greeting').textContent = `Wishing you a wonderful ${new Date().toLocaleDateString('en-US', { weekday: 'long' })}!`;
+document.getElementById("greeting").textContent =
+  `Wishing you a wonderful ${new Date().toLocaleDateString("en-US", { weekday: "long" })}!`;
 
 const secs = document.querySelectorAll("section[id]");
 addEventListener("scroll", () => {
@@ -306,16 +332,29 @@ if (typeof ScrollReveal !== "undefined") {
 }
 
 // Copy Email
-const cb = document.getElementById('copy-email');
-cb.addEventListener('click', () => navigator.clipboard.writeText('sathvaraamit2005@gmail.com').then(() => {
-  cb.innerHTML = 'Copied ✓'; setTimeout(() => cb.innerHTML = '<i class="ri-file-copy-line"></i>', 2000);
-}));
-
+const cb = document.getElementById("copy-email");
+cb.addEventListener("click", () =>
+  navigator.clipboard.writeText("sathvaraamit2005@gmail.com").then(() => {
+    cb.innerHTML = "Copied ✓";
+    setTimeout(
+      () => (cb.innerHTML = '<i class="ri-file-copy-line"></i>'),
+      2000,
+    );
+  }),
+);
 
 /*=============== MOBILE MENU ===============*/
-const navList = document.querySelector('.nav__list'), navTog = document.getElementById('nav-toggle'), navOv = document.getElementById('nav-overlay');
-const navToggle = s => { navList.classList.toggle('show', s); navOv.classList.toggle('show', s);
-  navTog.innerHTML = `<i class="ri-${s ? 'close' : 'menu'}-line"></i>`; document.body.style.overflow = s ? 'hidden' : ''; };
-navTog.onclick = () => navToggle(!navList.classList.contains('show'));
+const navList = document.querySelector(".nav__list"),
+  navTog = document.getElementById("nav-toggle"),
+  navOv = document.getElementById("nav-overlay");
+const navToggle = (s) => {
+  navList.classList.toggle("show", s);
+  navOv.classList.toggle("show", s);
+  navTog.innerHTML = `<i class="ri-${s ? "close" : "menu"}-line"></i>`;
+  document.body.style.overflow = s ? "hidden" : "";
+};
+navTog.onclick = () => navToggle(!navList.classList.contains("show"));
 navOv.onclick = () => navToggle(false);
-navList.querySelectorAll('a').forEach(a => a.onclick = () => navToggle(false));
+navList
+  .querySelectorAll("a")
+  .forEach((a) => (a.onclick = () => navToggle(false)));
