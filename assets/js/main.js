@@ -259,36 +259,6 @@ const SHEET_URL =
 const form = document.getElementById("contact-form"),
   statusEl = document.getElementById("form-status");
 
-// form.addEventListener("submit", async (e) => {
-//   e.preventDefault();
-//   const btn = form.querySelector("button[type=submit]"),
-//     label = btn.innerHTML;
-//   btn.disabled = true;
-//   btn.innerHTML = "Sending...";
-//   statusEl.className = "contact__status";
-//   statusEl.textContent = "";
-
-//   try {
-//     // const res = await fetch(SHEET_URL, {
-//     //   method: "POST",
-//     //   body: new URLSearchParams(new FormData(form)),
-//     // });
-
-//     // if ((await res.text()).trim() !== "ok") throw new Error("server");
-
-//     await fetch(SHEET_URL, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(new FormData(form)) });
-
-//     form.reset();
-//     statusEl.textContent = "Thanks! Your message has been sent ✓";
-//     statusEl.classList.add("ok");
-//   } catch {
-//     statusEl.textContent =
-//       "Something went wrong. Please email me at sathvaraamit2005@gmail.com";
-//     statusEl.classList.add("err");
-//   }
-//   btn.disabled = false;
-//   btn.innerHTML = label;
-// });
 
 form.addEventListener('submit', e => {
   e.preventDefault();
@@ -397,3 +367,29 @@ navOv.onclick = () => navToggle(false);
 navList
   .querySelectorAll("a")
   .forEach((a) => (a.onclick = () => navToggle(false)));
+
+
+
+  /*=============== DAILY QUOTE (footer) ===============*/
+const QUOTES = [   // [quote, author] - jitne chaho add karo
+  ['When life gives you chance, take it, break it and build it.', 'Amitkumar'],
+  ['Always ready for your next turn.', 'Amitkumar'],
+  ['Talk is cheap. Show me the code.', 'Linus Torvalds'],
+  ['The best way to predict the future is to invent it.', 'Alan Kay'],
+  ['All models are wrong, but some are useful.', 'George E. P. Box'],
+  ['Make it work, make it right, make it fast.', 'Kent Beck'],
+  ['Simplicity is prerequisite for reliability.', 'Edsger W. Dijkstra'],
+  ['The only way to do great work is to love what you do.', 'Steve Jobs'],
+  ['Premature optimization is the root of all evil.', 'Donald Knuth'],
+  ['Whether you think you can, or you think you can\'t, you\'re right.', 'Henry Ford'],
+  ['The only impossible journey is the one you never begin.', 'Tony Robbins'],
+  ['Data is the new oil.', 'Clive Humby'],
+  ['An investment in knowledge pays the best interest.', 'Benjamin Franklin']
+];
+(() => {
+  const q = document.getElementById('quote');
+  const day = Math.floor((Date.now() - new Date().getTimezoneOffset() * 6e4) / 864e5);   // aaj ka din (local time)
+  const [text, author] = QUOTES[day % QUOTES.length];
+  q.textContent = text;
+  const s = document.createElement('span'); s.textContent = '- ' + author; q.appendChild(s);
+})();
