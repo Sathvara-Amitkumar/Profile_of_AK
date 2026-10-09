@@ -258,36 +258,71 @@ const SHEET_URL =
   "https://script.google.com/macros/s/AKfycbyhkT1JpDLb2HfedHBNxdx12mQd03saMVB0nkEmje7bK7vW1CKXFO8KIWndtuLlKecQ7g/exec";
 const form = document.getElementById("contact-form"),
   statusEl = document.getElementById("form-status");
-form.addEventListener("submit", async (e) => {
+
+// form.addEventListener("submit", async (e) => {
+//   e.preventDefault();
+//   const btn = form.querySelector("button[type=submit]"),
+//     label = btn.innerHTML;
+//   btn.disabled = true;
+//   btn.innerHTML = "Sending...";
+//   statusEl.className = "contact__status";
+//   statusEl.textContent = "";
+
+//   try {
+//     // const res = await fetch(SHEET_URL, {
+//     //   method: "POST",
+//     //   body: new URLSearchParams(new FormData(form)),
+//     // });
+
+//     // if ((await res.text()).trim() !== "ok") throw new Error("server");
+
+//     await fetch(SHEET_URL, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(new FormData(form)) });
+
+//     form.reset();
+//     statusEl.textContent = "Thanks! Your message has been sent ✓";
+//     statusEl.classList.add("ok");
+//   } catch {
+//     statusEl.textContent =
+//       "Something went wrong. Please email me at sathvaraamit2005@gmail.com";
+//     statusEl.classList.add("err");
+//   }
+//   btn.disabled = false;
+//   btn.innerHTML = label;
+// });
+
+form.addEventListener('submit', e => {
   e.preventDefault();
-  const btn = form.querySelector("button[type=submit]"),
-    label = btn.innerHTML;
-  btn.disabled = true;
-  btn.innerHTML = "Sending...";
-  statusEl.className = "contact__status";
-  statusEl.textContent = "";
+  if (form.classList.contains('sending')) return;
+  const data = new FormData(form), body = new URLSearchParams(data);
+  const btn = form.querySelector('button[type=submit]'), label = btn.innerHTML;
+  const plane = form.querySelector('.flight i'), fl = form.querySelector('.flight');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let failed = false, done = false;
+  const showErr = () => {
+    for (const [k, v] of data) if (form[k]) form[k].value = v;        // text wapas aa jaye
+    statusEl.className = 'contact__status err';
+    statusEl.textContent = 'Something went wrong. Please email me at sathvaraamit2005@gmail.com';
+  };
 
-  try {
-    // const res = await fetch(SHEET_URL, {
-    //   method: "POST",
-    //   body: new URLSearchParams(new FormData(form)),
-    // });
+  statusEl.textContent = ''; btn.disabled = true; btn.innerHTML = 'Sending...'; form.classList.add('sending');
+  fetch(SHEET_URL, { method: 'POST', mode: 'no-cors', body, keepalive: true }).catch(() => { failed = true; if (done) showErr(); });
 
-    // if ((await res.text()).trim() !== "ok") throw new Error("server");
+  const puffs = reduce ? 0 : setInterval(() => {                     // dhuan
+    const f = form.getBoundingClientRect(), p = plane.getBoundingClientRect(), s = document.createElement('span');
+    s.className = 'puff'; s.style.left = (p.left - f.left) + 'px';
+    s.style.top = (p.top - f.top + p.height / 2 - 7 + Math.random() * 10 - 5) + 'px';
+    fl.appendChild(s); s.addEventListener('animationend', () => s.remove());
+  }, 45);
 
-    await fetch(SHEET_URL, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(new FormData(form)) });
-
-    form.reset();
-    statusEl.textContent = "Thanks! Your message has been sent ✓";
-    statusEl.classList.add("ok");
-  } catch {
-    statusEl.textContent =
-      "Something went wrong. Please email me at sathvaraamit2005@gmail.com";
-    statusEl.classList.add("err");
-  }
-  btn.disabled = false;
-  btn.innerHTML = label;
+  setTimeout(() => {                                                 // plane nikalne ke baad
+    clearInterval(puffs); done = true;
+    form.classList.remove('sending'); btn.disabled = false; btn.innerHTML = label;
+    if (failed) return showErr();
+    form.reset(); statusEl.className = 'contact__status ok'; statusEl.textContent = 'Thanks! Your message has been sent ✓';
+  }, reduce ? 300 : 1500);
 });
+
+
 
 /*=============== FOOTER YEAR, ACTIVE LINK, CURSOR, SCROLL REVEAL ===============*/
 document.getElementById("year").textContent = new Date().getFullYear();

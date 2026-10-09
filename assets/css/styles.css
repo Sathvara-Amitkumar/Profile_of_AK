@@ -389,3 +389,18 @@ img {
 .work__tabs[data-tab="cert"] .work__slider{transform:translateX(200%)}
 .work__button{white-space:nowrap;padding:.7rem .5rem}
 @media screen and (max-width:480px){.work__button{font-size:.8rem}.work__button i{display:none}}
+
+
+
+/*=============== CONTACT: PLANE ANIMATION ===============*/
+.contact__form{position:relative;overflow:hidden}
+.contact__form>*{transition:opacity .3s}
+.contact__form.sending>:not(.flight){opacity:.12;pointer-events:none}
+.flight{position:absolute;inset:0;pointer-events:none;opacity:0}
+.sending .flight{opacity:1}
+.flight i{position:absolute;top:50%;left:-3rem;font-size:2.4rem;color:var(--first-color-light);transform:translateY(-50%) rotate(45deg);filter:drop-shadow(0 0 12px hsla(var(--hue),80%,65%,.8))}
+.sending .flight i{animation:fly 1.5s cubic-bezier(.45,0,.55,1) forwards}
+@keyframes fly{to{left:calc(100% + 1rem)}}
+.puff{position:absolute;width:.9rem;height:.9rem;border-radius:50%;opacity:.85;background:radial-gradient(circle,hsla(0,0%,100%,.75),hsla(var(--hue),70%,70%,.3) 60%,transparent 70%);animation:puff .9s ease-out forwards}
+@keyframes puff{to{transform:translate(-1.6rem,-.4rem) scale(2.8);opacity:0}}
+@media (prefers-reduced-motion:reduce){.flight{display:none}}
