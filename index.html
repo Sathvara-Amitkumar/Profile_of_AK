@@ -185,9 +185,7 @@
    <!--==================== FOOTER ====================-->
    <footer class="footer">
       <div class="footer__box">
-         <p class="footer__quote">When life gives you chance, take it, break it and build it.<span>- Amitkumar</span>
-         <!-- <p class="footer__quote">Always ready for your next turn.<span>- Amitkumar</span> -->
-      </p>
+         <p class="footer__quote"><span class="footer__quote-text">When life gives you a chance, take it, break it, and build it.</span><span>- Amitkumar</span></p>
          <ul class="footer__social">
             <li><a href="https://github.com/Sathvara-Amitkumar" target="_blank" rel="noopener" aria-label="GitHub"><i
                      class="ri-github-fill"></i></a></li>
@@ -213,6 +211,16 @@
 
    <script type="module">
       import createGlobe from "https://cdn.jsdelivr.net/npm/cobe@0.6.3/+esm";
+      const dailyQuotes = [
+         "When life gives you a chance, take it, break it, and build it.",
+         "Always ready for your next turn.",
+         "Small steps every day lead to big results.",
+         "Keep learning, keep building, and keep moving forward.",
+         "Challenges are opportunities to create something better."
+      ];
+      const dayNumber = Math.floor(Date.now() / 86400000);
+      document.querySelector('.footer__quote-text').textContent = dailyQuotes[dayNumber % dailyQuotes.length];
+
       const cv = document.getElementById('globe');
       let phi = 0, dragging = false, lastX = 0;
 
