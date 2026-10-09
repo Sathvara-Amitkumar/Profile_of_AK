@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="description" content="Blogs by Amitkumar Sathvara on machine learning, data science and projects are coming soon.">
+   <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+   <link rel="stylesheet" href="assets/css/styles.css">
+   <title>Blog - Coming Soon | Amitkumar Sathvara</title>
+   <style>
+      body{animation:pin .8s ease both}
+      @keyframes pin{from{opacity:0}}
+      body.page-out{opacity:0;transition:opacity .35s}
+      .nav__logo{display:block;width:auto;height:auto;background:none;border-radius:0}
+      .nav__logo img{height:2.2rem;display:block}
+
+      .soon{position:relative;min-height:100vh;display:grid;place-items:center;overflow:hidden;padding:7rem 1.25rem 4.5rem;text-align:center}
+      .soon__orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.45;pointer-events:none}
+      .o1{width:24rem;height:24rem;background:var(--first-color-alt);top:-7rem;left:-7rem;animation:orb1 16s ease-in-out infinite alternate}
+      .o2{width:20rem;height:20rem;background:hsl(calc(var(--hue) + 40),80%,50%);bottom:-6rem;right:-5rem;animation:orb2 20s ease-in-out infinite alternate}
+      .o3{width:14rem;height:14rem;background:var(--first-color);top:40%;left:55%;opacity:.25;animation:orb1 24s ease-in-out infinite alternate-reverse}
+      @keyframes orb1{to{transform:translate(8rem,6rem) scale(1.25)}}
+      @keyframes orb2{to{transform:translate(-9rem,-5rem) scale(1.2)}}
+      .soon__grid{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(hsla(0,0%,100%,.045) 1px,transparent 1px),linear-gradient(90deg,hsla(0,0%,100%,.045) 1px,transparent 1px);background-size:3rem 3rem;-webkit-mask-image:radial-gradient(circle at center,#000 15%,transparent 70%);mask-image:radial-gradient(circle at center,#000 15%,transparent 70%)}
+
+      .soon__content{position:relative;z-index:1;width:min(100%,46rem);display:grid;justify-items:center;gap:1.5rem}
+      .soon__content>*{opacity:0;transform:translateY(26px);transition:opacity .8s,transform .8s cubic-bezier(.2,.7,.2,1)}
+      .soon__content>.show{opacity:1;transform:none}
+
+      .soon__icon{width:4.5rem;height:4.5rem;display:grid;place-items:center;border-radius:50%;font-size:2rem;color:#fff;background:linear-gradient(135deg,var(--first-color-alt),var(--first-color-alt-2));animation:float 4s ease-in-out infinite,pulse 2.6s infinite}
+      @keyframes float{50%{transform:translateY(-10px)}}
+      @keyframes pulse{0%{box-shadow:0 0 0 0 hsla(var(--hue),80%,60%,.55)}100%{box-shadow:0 0 0 1.6rem hsla(var(--hue),80%,60%,0)}}
+      .soon__badge{display:inline-flex;align-items:center;gap:.6rem;padding:.45rem 1.1rem;border-radius:3rem;border:1px solid hsla(var(--hue),70%,60%,.4);background:hsla(var(--hue),70%,60%,.12);color:var(--first-color-light);font-size:var(--small-font-size);font-weight:var(--font-semi-bold);letter-spacing:.12em;text-transform:uppercase}
+      .soon__badge b{width:.5rem;height:.5rem;border-radius:50%;background:#5ee08a;animation:blink 1.4s infinite}
+      @keyframes blink{50%{opacity:.2}}
+      .soon__title{font-size:clamp(2.2rem,8vw,4.2rem);line-height:1.1}
+      .soon__title span{display:block;background:linear-gradient(90deg,var(--first-color),var(--first-color-alt-2),var(--first-color));background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shine 5s linear infinite}
+      @keyframes shine{to{background-position:200% center}}
+      .soon__text{max-width:34rem;line-height:1.8}
+
+      /* countdown */
+      .count{display:flex;justify-content:center;gap:.7rem;margin-top:.5rem}
+      .ring{position:relative;width:clamp(4.2rem,20vw,6.2rem);aspect-ratio:1}
+      .ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+      .ring circle{fill:none;stroke-width:6}
+      .ring .trk{stroke:hsla(0,0%,100%,.08)}
+      .ring .bar{stroke:url(#grad);stroke-linecap:round;transition:stroke-dashoffset .8s cubic-bezier(.3,.7,.3,1)}
+      .ring__txt{position:absolute;inset:0;display:grid;place-content:center;gap:.1rem}
+      .ring__txt b{font-family:var(--second-font);font-size:clamp(1.1rem,5.2vw,1.7rem);color:var(--title-color);display:inline-block}
+      .ring__txt span{font-size:clamp(.5rem,2.2vw,.65rem);letter-spacing:.08em;text-transform:uppercase}
+      .tick{animation:tick .45s}
+      @keyframes tick{40%{transform:scale(1.2);color:var(--first-color-light)}}
+      .count__done{color:#5ee08a;font-weight:var(--font-semi-bold)}
+
+      /* notify */
+      .notify{display:grid;gap:.8rem;width:100%;max-width:30rem;justify-items:center}
+      .notify__label{font-size:var(--small-font-size)}
+      .notify__row{display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem;width:100%}
+      .notify input[type=email]{flex:1 1 14rem;min-width:0;padding:.95rem 1.2rem;border-radius:3rem;background:var(--container-color);border:1px solid hsl(240,8%,16%);color:var(--title-color);font-family:var(--body-font);font-size:var(--small-font-size);outline:none;transition:border-color .3s}
+      .notify input[type=email]:focus{border-color:var(--first-color)}
+      .notify button{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.95rem 1.6rem;border-radius:3rem;background:var(--first-color-alt);color:#fff;font-weight:var(--font-semi-bold);font-size:var(--small-font-size);cursor:pointer;transition:background .3s,transform .3s}
+      .notify button:hover{background:var(--first-color-alt-2);transform:translateY(-2px)}
+      .notify button:disabled{opacity:.6;cursor:wait}
+      .notify__status{min-height:1.2em;font-size:var(--small-font-size);color:#ff7b7b}
+      .hp{position:absolute;left:-9999px;height:0;opacity:0}
+      .notify[hidden],.thanks[hidden],.count__done[hidden]{display:none}
+      .thanks{display:grid;justify-items:center;gap:.4rem;padding:1.5rem 2rem;border-radius:1.25rem;background:var(--container-color);border:1px solid hsl(var(--hue),60%,40%);animation:pop .6s cubic-bezier(.3,1.5,.5,1)}
+      .thanks i{font-size:3rem;color:#5ee08a}
+      .thanks h3{font-size:var(--h2-font-size)}
+      @keyframes pop{from{opacity:0;transform:scale(.8)}}
+
+      .soon__back{color:var(--text-color-light);font-size:var(--small-font-size);transition:color .3s}
+      .soon__back:hover{color:var(--first-color)}
+      .soon__foot{position:absolute;bottom:1.2rem;left:0;width:100%;z-index:1;font-size:var(--smaller-font-size)}
+      @media (prefers-reduced-motion:reduce){.soon__orb,.soon__icon,.soon__title span{animation:none}}
+   </style>
+</head>
+<body>
+   <header class="header header-blur" id="header">
+      <nav class="nav container">
+         <a href="index.html" class="nav__logo"><img src="assets/img/logo2.png" alt="Amit kumar"></a>
+         <ul class="nav__list">
+            <li><a href="index.html#about" class="nav__link">About</a></li>
+            <li><a href="index.html#projects" class="nav__link">Projects</a></li>
+            <li><a href="index.html#work" class="nav__link">Work &amp; Education</a></li>
+            <li><a href="index.html#skills" class="nav__link">Skills</a></li>
+            <li><a href="index.html#contact" class="nav__link">Contact</a></li>
+            <li><a href="blog.html" class="nav__link active-link">Blog</a></li>
+         </ul>
+         <button class="nav__toggle" id="nav-toggle" aria-label="Menu"><i class="ri-menu-line"></i></button>
+      </nav>
+   </header>
+   <div class="nav__overlay" id="nav-overlay"></div>
+
+   <main class="soon">
+      <div class="soon__orb o1"></div><div class="soon__orb o2"></div><div class="soon__orb o3"></div>
+      <div class="soon__grid"></div>
+      <svg width="0" height="0" style="position:absolute"><defs><linearGradient id="grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--first-color-alt-2)"/><stop offset="1" style="stop-color:var(--first-color)"/></linearGradient></defs></svg>
+
+      <section class="soon__content">
+         <div class="soon__icon"><i class="ri-quill-pen-line"></i></div>
+         <span class="soon__badge"><b></b>Coming Soon</span>
+         <h1 class="soon__title">My Blogs Are <span>Almost Here</span></h1>
+         <p class="soon__text">Machine learning, data science and the projects I build: I'm writing down everything I learn along the way. The first post is on its way.</p>
+         <div class="count" id="count"></div>
+         <p class="count__done" id="count-done" hidden>Launching any moment now ✨</p>
+         <form class="notify" id="notify">
+            <p class="notify__label">Get notified when the first blog goes live</p>
+            <div class="notify__row">
+               <input type="email" name="email" placeholder="Enter your email" required>
+               <input name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+               <button type="submit">Notify me <i class="ri-notification-3-line"></i></button>
+            </div>
+            <p class="notify__status" id="notify-status" role="status"></p>
+         </form>
+         <div class="thanks" id="thanks" hidden><i class="ri-checkbox-circle-fill"></i><h3>Thank you!</h3><p>Stay tuned. I'll email you the moment the first blog is live.</p></div>
+         <a href="index.html" class="soon__back"><i class="ri-arrow-left-line"></i> Back to Home</a>
+      </section>
+      <footer class="soon__foot">&#169; <span id="y">2026</span> Designed &amp; Developed by Amitkumar Sathvara</footer>
+   </main>
+
+   <script>
+      /* ===== SETTINGS ===== */
+      const LAUNCH = new Date('2026-10-12T18:00:00+05:30');   // launch date/time (3 days from your deploy day)
+      const DAYS_TOTAL = 3;                                    // days ring is full at this many days
+      const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyhkT1JpDLb2HfedHBNxdx12mQd03saMVB0nkEmje7bK7vW1CKXFO8KIWndtuLlKecQ7g/exec';         // same Apps Script URL as main.js
+
+      /* Entrance animation (staggered) */
+      document.querySelectorAll('.soon__content>*').forEach((el, i) => setTimeout(() => el.classList.add('show'), 150 + i * 130));
+      document.getElementById('y').textContent = new Date().getFullYear();
+
+      /* Circular countdown */
+      const C = 2 * Math.PI * 45, $ = id => document.getElementById(id);
+      const units = [['days', 'Days'], ['hours', 'Hours'], ['mins', 'Minutes'], ['secs', 'Seconds']];
+      $('count').innerHTML = units.map(([k, l]) => `<div class="ring"><svg viewBox="0 0 100 100"><circle class="trk" cx="50" cy="50" r="45"/><circle class="bar" id="bar-${k}" cx="50" cy="50" r="45" stroke-dasharray="${C}" stroke-dashoffset="${C}"/></svg><div class="ring__txt"><b id="n-${k}">00</b><span>${l}</span></div></div>`).join('');
+      let lastSec = -1;
+      function tick() {
+        const diff = Math.max(0, LAUNCH - Date.now());
+        const d = Math.floor(diff / 864e5), h = Math.floor(diff % 864e5 / 36e5), m = Math.floor(diff % 36e5 / 6e4), s = Math.floor(diff % 6e4 / 1e3);
+        const set = (k, v, max) => { $('n-' + k).textContent = String(v).padStart(2, '0'); $('bar-' + k).style.strokeDashoffset = C * (1 - Math.min(v / max, 1)); };
+        set('days', d, DAYS_TOTAL); set('hours', h, 24); set('mins', m, 60); set('secs', s, 60);
+        if (s !== lastSec) { lastSec = s; const el = $('n-secs'); el.classList.remove('tick'); void el.offsetWidth; el.classList.add('tick'); }
+        $('count-done').hidden = diff > 0;
+      }
+      tick(); setInterval(tick, 1000);
+
+      /* Notify me -> Google Sheet (new tab "Blog Subscribers") */
+      const nf = $('notify'), st = $('notify-status');
+      nf.addEventListener('submit', async e => {
+        e.preventDefault();
+        const btn = nf.querySelector('button'), label = btn.innerHTML;
+        btn.disabled = true; btn.innerHTML = 'Sending...'; st.textContent = '';
+        try {
+          if (SHEET_URL.startsWith('PASTE')) throw new Error('no url');
+          const body = new URLSearchParams({ type: 'blog', email: nf.email.value.trim(), website: nf.website.value });
+          await fetch(SHEET_URL, { method: 'POST', mode: 'no-cors', body });
+          nf.hidden = true; $('thanks').hidden = false;
+        } catch {
+          st.textContent = 'Something went wrong. Please try again.';
+          btn.disabled = false; btn.innerHTML = label;
+        }
+      });
+
+      /* Page transition when leaving */
+      document.querySelectorAll('a[href="index.html"]').forEach(a => a.addEventListener('click', e => {
+        e.preventDefault(); document.body.classList.add('page-out'); setTimeout(() => location.href = a.href, 350);
+      }));
+
+      /* Mobile menu */
+      const navList = document.querySelector('.nav__list'), navTog = $('nav-toggle'), navOv = $('nav-overlay');
+      const navToggle = s => { navList.classList.toggle('show', s); navOv.classList.toggle('show', s);
+        navTog.innerHTML = `<i class="ri-${s ? 'close' : 'menu'}-line"></i>`; document.body.style.overflow = s ? 'hidden' : ''; };
+      navTog.onclick = () => navToggle(!navList.classList.contains('show'));
+      navOv.onclick = () => navToggle(false);
+      navList.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navToggle(false)));
+   </script>
+</body>
+</html>
