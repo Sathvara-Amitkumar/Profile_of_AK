@@ -9,7 +9,16 @@
    <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
    <link rel="stylesheet" href="assets/css/styles.css">
+   <link rel="stylesheet" href="assets/css/blog.css">
    <title>Blog - Coming Soon | Amitkumar Sathvara</title>
+
+   <meta property="og:type" content="website">
+   <meta property="og:title" content="Amitkumar Sathvara | Data Scientist & AI/ML Engineer">
+   <meta property="og:description" content="Portfolio of machine learning, deep learning and backend projects.">
+   <meta property="og:image" content="https://amitsathvara.netlify.app/assets/img/og-default.png">
+   <meta property="og:url" content="https://amitsathvara.netlify.app/">
+   <meta name="twitter:card" content="summary_large_image">
+
    <style>
       body {
          animation: pin .8s ease both
@@ -467,15 +476,47 @@
       <footer class="soon__foot">&#169; <span id="y">2026</span> Designed &amp; Developed by Amitkumar Sathvara</footer>
    </main>
 
+   <!-- Blog Section -->
+   <main class="blog" id="blog" hidden>
+      <div class="blog__head container">
+         <h1 class="section__title"><span>My Blogs</span> <br> Notes &amp; Learnings</h1>
+         <div class="btags" id="b-tags"></div>
+      </div>
+      <div class="blog__grid container" id="b-grid"></div>
+      <p class="blog__foot">&#169; 2026 Designed &amp; Developed by Amitkumar Sathvara</p>
+   </main>
+
+
+   <script src="assets/js/posts.js"></script>
+
    <script>
       /* ===== SETTINGS ===== */
-      const LAUNCH = new Date('2026-10-12T18:00:00+05:30');   // launch date/time (3 days from your deploy day)
+      const LAUNCH = new Date('2026-10-15T18:00:00+05:30');   // launch date/time (3 days from your deploy day)
       const DAYS_TOTAL = 3;                                    // days ring is full at this many days
       const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyhkT1JpDLb2HfedHBNxdx12mQd03saMVB0nkEmje7bK7vW1CKXFO8KIWndtuLlKecQ7g/exec';         // same Apps Script URL as main.js
 
       /* Entrance animation (staggered) */
       document.querySelectorAll('.soon__content>*').forEach((el, i) => setTimeout(() => el.classList.add('show'), 150 + i * 130));
       document.getElementById('y').textContent = new Date().getFullYear();
+
+
+      /* ===== BLOG MODE: countdown khatam hote hi ===== */
+      const wasLive = Date.now() >= LAUNCH; let launched = false;
+      function showBlog() {
+         if (launched) return; launched = true;
+         const soon = document.querySelector('.soon');
+         if (!wasLive) soon.classList.add('leave');
+         setTimeout(() => { soon.hidden = true; $('blog').hidden = false; renderBlog(); document.title = 'Blog | Amitkumar Sathvara'; scrollTo(0, 0); }, wasLive ? 0 : 600);
+      }
+      function renderBlog() {
+         const tags = ['All', ...new Set(POSTS.flatMap(p => p.tags))];
+         $('b-tags').innerHTML = tags.map((t, i) => `<button class="btag${i ? '' : ' on'}" data-t="${t}">${t}</button>`).join('');
+         const draw = t => $('b-grid').innerHTML = POSTS.filter(p => t === 'All' || p.tags.includes(t)).sort((a, b) => b.date.localeCompare(a.date)).map(p =>
+            `<a class="bcard" href="post.html?p=${p.slug}"><img src="${p.cover}" alt="" loading="lazy"><div class="bcard__body"><div class="tags">${p.tags.map(x => `<span>${x}</span>`).join('')}</div><h3>${p.title}</h3><p>${p.summary}</p><small>${new Date(p.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })} · ${p.read}</small></div></a>`).join('');
+         $('b-tags').onclick = e => { const b = e.target.closest('.btag'); if (!b) return; document.querySelectorAll('.btag').forEach(x => x.classList.toggle('on', x === b)); draw(b.dataset.t); };
+         draw('All');
+      }
+
 
       /* Circular countdown */
       const C = 2 * Math.PI * 45, $ = id => document.getElementById(id);
@@ -488,7 +529,8 @@
          const set = (k, v, max) => { $('n-' + k).textContent = String(v).padStart(2, '0'); $('bar-' + k).style.strokeDashoffset = C * (1 - Math.min(v / max, 1)); };
          set('days', d, DAYS_TOTAL); set('hours', h, 24); set('mins', m, 60); set('secs', s, 60);
          if (s !== lastSec) { lastSec = s; const el = $('n-secs'); el.classList.remove('tick'); void el.offsetWidth; el.classList.add('tick'); }
-         $('count-done').hidden = diff > 0;
+         // $('count-done').hidden = diff > 0;
+         if (diff <= 0) showBlog();
       }
       tick(); setInterval(tick, 1000);
 

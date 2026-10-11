@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta property="og:type" content="article">
+   <meta property="og:title" content="Blog | Amitkumar Sathvara">
+   <meta property="og:description" content="Notes and learnings on data science, machine learning and system design.">
+   <meta property="og:image" content="https://amitsathvara.netlify.app/assets/img/og-default.png">
+   <meta name="twitter:card" content="summary_large_image">
+   <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+   <link rel="stylesheet" href="assets/css/styles.css">
+   <link rel="stylesheet" href="assets/css/blog.css">
+   <title>Blog | Amitkumar Sathvara</title>
+   <!-- <style>.nav__logo{display:block;width:auto;height:auto;background:none;border-radius:0}.nav__logo img{height:2.2rem;display:block}</style> -->
+</head>
+<body>
+   <div class="progress" id="progress"></div>
+   <header class="header header-blur" id="header">
+      <nav class="nav container">
+         <a href="index.html" class="nav__logo"><img src="assets/img/logo2.png" height="75" width="75" alt="Amit"></a>
+         <ul class="nav__list">
+            <li><a href="index.html#about" class="nav__link">About</a></li>
+            <li><a href="index.html#projects" class="nav__link">Projects</a></li>
+            <li><a href="index.html#work" class="nav__link">Work &amp; Education</a></li>
+            <li><a href="index.html#skills" class="nav__link">Skills</a></li>
+            <li><a href="index.html#contact" class="nav__link">Contact</a></li>
+            <li><a href="blog.html" class="nav__link active-link">Blog</a></li>
+         </ul>
+         <button class="nav__toggle" id="nav-toggle" aria-label="Menu"><i class="ri-menu-line"></i></button>
+      </nav>
+   </header>
+   <div class="nav__overlay" id="nav-overlay"></div>
+
+   <main class="post container">
+      <div class="post__wrap">
+         <a href="blog.html" class="post__back"><i class="ri-arrow-left-line"></i> All blogs</a>
+         <h1 class="post__title" id="p-title">Loading...</h1>
+         <div class="author">
+            <!-- apni chhoti square photo: assets/img/author.jpg (na mile to home-perfil.png use hoga) -->
+            <img class="author__img" src="assets/img/ME_2.jpg" onerror="this.onerror=null;this.src='assets/img/home-perfil.png'" alt="Amitkumar Sathvara">
+            <div><b>Amitkumar Sathvara</b><span id="p-date"></span></div>
+         </div>
+         <div class="tags" id="p-tags"></div>
+         <img class="post__cover" id="p-cover" alt="" hidden>
+         <article class="post__body" id="post-body"></article>
+
+         <footer class="post__foot">
+            <div class="pbar">
+               <div class="pbar__g">
+                  <button class="pill" id="b-like" aria-label="Like"><i class="ri-heart-line"></i><span id="like-n">0</span></button>
+                  <button class="pill" id="b-comment"><i class="ri-chat-3-line"></i>Comments</button>
+               </div>
+               <div class="pbar__g">
+                  <button class="pill" id="b-copy"><i class="ri-links-line"></i>Copy link</button>
+                  <button class="pill" id="b-pdf"><i class="ri-file-pdf-2-line"></i>Download PDF</button>
+               </div>
+            </div>
+            <div class="pn">
+               <a class="pn__btn" id="pn-prev"><i class="ri-arrow-left-line"></i> Previous</a>
+               <a class="pn__btn" id="pn-next">Next <i class="ri-arrow-right-line"></i></a>
+            </div>
+            <section class="comments" id="comments">
+               <h2>Discussion about this post</h2>
+               <div id="giscus"></div>
+            </section>
+         </footer>
+      </div>
+   </main>
+
+   <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+   <script src="assets/js/posts.js"></script>
+   <script>
+      /* ===== SETTINGS ===== */
+      const SITE = 'https://amitsathvara.netlify.app';
+      const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyhkT1JpDLb2HfedHBNxdx12mQd03saMVB0nkEmje7bK7vW1CKXFO8KIWndtuLlKecQ7g/exec';           // same Apps Script URL (likes ke liye)
+      const GISCUS = { repo: 'Sathvara-Amitkumar/Profile_of_AK', repoId: '', category: 'Announcements', categoryId: '' };
+
+      const $ = id => document.getElementById(id);
+      const ls = { get: k => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch {} } };
+      const slug = new URLSearchParams(location.search).get('p');
+      const p = POSTS.find(x => x.slug === slug);
+
+      if (!p) {
+         $('p-title').textContent = 'Post not found';
+         $('post-body').innerHTML = '<p>This post does not exist. <a href="blog.html">Back to all blogs</a></p>';
+         document.querySelector('.post__foot').hidden = true;
+      } else {
+         document.title = p.title + ' | Amitkumar Sathvara';
+         $('p-title').textContent = p.title;
+         $('p-date').textContent = new Date(p.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase() + ' · ' + p.read.toUpperCase();
+         $('p-tags').innerHTML = p.tags.map(t => `<span>${t}</span>`).join('');
+         $('p-cover').src = p.cover; $('p-cover').hidden = false;
+         fetch(`posts/${p.slug}.md`).then(r => { if (!r.ok) throw 0; return r.text(); })
+            .then(md => { $('post-body').innerHTML = marked.parse(md); hljs.highlightAll(); })
+            .catch(() => $('post-body').innerHTML = '<p>Could not load this post. Please try again.</p>');
+
+         /* Previous / Next (date ke hisaab se) */
+         const list = [...POSTS].sort((a, b) => a.date.localeCompare(b.date)), i = list.findIndex(x => x.slug === slug);
+         const link = (el, t) => t ? (el.href = 'post.html?p=' + t.slug, el.title = t.title) : el.classList.add('off');
+         link($('pn-prev'), list[i - 1]); link($('pn-next'), list[i + 1]);
+
+         /* Like (count Google Sheet me) */
+         const lk = $('b-like'), key = 'liked:' + slug, live = !SHEET_URL.startsWith('PASTE');
+         let n = 0, liked = ls.get(key) === '1';
+         const paint = () => { lk.classList.toggle('on', liked); lk.querySelector('i').className = liked ? 'ri-heart-fill' : 'ri-heart-line'; $('like-n').textContent = n; };
+         paint();
+         if (live) fetch(`${SHEET_URL}?type=likes&slug=${slug}`).then(r => r.json()).then(d => { n = d.count || 0; paint(); }).catch(() => {});
+         lk.onclick = () => {
+            liked = !liked; n = Math.max(0, n + (liked ? 1 : -1)); ls.set(key, liked ? '1' : '0'); paint();
+            if (live) fetch(SHEET_URL, { method: 'POST', mode: 'no-cors', keepalive: true, body: new URLSearchParams({ type: 'like', slug, delta: liked ? '1' : '-1' }) }).catch(() => {});
+         };
+
+         /* Comments (Giscus = GitHub Discussions) */
+         if (GISCUS.repoId.startsWith('PASTE')) { $('comments').hidden = true; $('b-comment').hidden = true; }
+         else {
+            let loaded = false;
+            const load = () => {
+               if (loaded) return; loaded = true;
+               const s = document.createElement('script'); s.src = 'https://giscus.app/client.js';
+               Object.entries({ repo: GISCUS.repo, 'repo-id': GISCUS.repoId, category: GISCUS.category, 'category-id': GISCUS.categoryId, mapping: 'specific', term: slug, 'reactions-enabled': '0', 'emit-metadata': '0', 'input-position': 'top', theme: 'dark', lang: 'en' })
+                  .forEach(([k, v]) => s.setAttribute('data-' + k, v));
+               s.crossOrigin = 'anonymous'; s.async = true; $('giscus').appendChild(s);
+            };
+            new IntersectionObserver((e, o) => { if (e[0].isIntersecting) { load(); o.disconnect(); } }, { rootMargin: '400px' }).observe($('comments'));
+            $('b-comment').onclick = () => { $('comments').scrollIntoView({ behavior: 'smooth' }); load(); };
+         }
+
+         /* Copy link (share-preview wala link) + PDF */
+         $('b-copy').onclick = e => navigator.clipboard.writeText(`${SITE}/p/${slug}.html`).then(() => {
+            const b = e.currentTarget, o = b.innerHTML; b.innerHTML = '<i class="ri-check-line"></i>Copied'; setTimeout(() => b.innerHTML = o, 2000);
+         });
+         $('b-pdf').onclick = () => print();      // dialog me "Save as PDF" chuno
+      }
+
+      addEventListener('scroll', () => { const h = document.documentElement; $('progress').style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%'; });
+
+      /* Mobile menu */
+      const navList = document.querySelector('.nav__list'), navTog = $('nav-toggle'), navOv = $('nav-overlay');
+      const navToggle = s => { navList.classList.toggle('show', s); navOv.classList.toggle('show', s); navTog.innerHTML = `<i class="ri-${s ? 'close' : 'menu'}-line"></i>`; document.body.style.overflow = s ? 'hidden' : ''; };
+      navTog.onclick = () => navToggle(!navList.classList.contains('show'));
+      navOv.onclick = () => navToggle(false);
+      navList.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navToggle(false)));
+   </script>
+</body>
+</html>
