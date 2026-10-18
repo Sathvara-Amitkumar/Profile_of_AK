@@ -12,7 +12,7 @@ const POSTS = [
     summary: "How a tiny array of bits can tell you an item is definitely not in a huge set, how to size one, a Python implementation, and where real systems use it."
   },
   {
-    slug: "llm-distilation",
+    slug: "llm-distillation",
     title: "LLM Distilation: Make Smaller Models, Same Intelligence",
     date: "2026-10-18",
     read: "10 min read",
