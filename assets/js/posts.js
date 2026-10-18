@@ -10,5 +10,14 @@ const POSTS = [
     tags: ["Data Structures", "System Design"],
     cover: "assets/img/Blog-Bloom Filter_1.png",
     summary: "How a tiny array of bits can tell you an item is definitely not in a huge set, how to size one, a Python implementation, and where real systems use it."
+  },
+  {
+    slug: "llm-distilation",
+    title: "LLM Distilation: Make Smaller Models, Same Intelligence",
+    date: "2026-10-18",
+    read: "10 min read",
+    tags: ["LLM"],
+    cover: "assets/img/Blog-LLM Distillation_2.png",
+    summary: "what if a small model could learn from a big one and copy its skills?"
   }
 ];
